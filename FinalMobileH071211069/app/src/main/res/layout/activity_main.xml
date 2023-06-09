@@ -4,7 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".activity.MainActivity">
+
+    <FrameLayout
+        android:id="@+id/container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="30dp"/>
 
     <RelativeLayout
         android:id="@+id/navbar"
@@ -22,7 +28,6 @@
             android:layout_centerVertical="true"
             android:layout_toStartOf="@id/televbt"
             android:layout_marginEnd="100dp"
-            style=""
             android:src="@drawable/baseline_movie_24" />
 
         <TextView
@@ -90,9 +95,6 @@
 
     </RelativeLayout>
 
-    <FrameLayout
-        android:id="@+id/container"
-        android:layout_width="match_parent"
-        android:layout_height="682dp" />
+
 
 </FrameLayout>

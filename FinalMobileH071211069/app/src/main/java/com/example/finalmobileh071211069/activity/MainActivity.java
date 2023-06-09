@@ -1,4 +1,4 @@
-package com.example.finalmobileh071211069;
+package com.example.finalmobileh071211069.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
@@ -7,6 +7,11 @@ import androidx.fragment.app.FragmentTransaction;
 
 import android.os.Bundle;
 import android.widget.ImageView;
+
+import com.example.finalmobileh071211069.fragment.FavFragment;
+import com.example.finalmobileh071211069.fragment.MovieFragment;
+import com.example.finalmobileh071211069.R;
+import com.example.finalmobileh071211069.fragment.tvFragment;
 
 public class MainActivity extends AppCompatActivity {
 
