@@ -1,10 +1,12 @@
 package com.example.finalmobileh071211069.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -12,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.finalmobileh071211069.R;
+import com.example.finalmobileh071211069.activity.MovieDetail;
 import com.example.finalmobileh071211069.movieModel.MovieResult;
 
 import java.util.List;
@@ -36,6 +39,21 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MvViewHolder
         view = inflater.inflate(R.layout.item_movie, parent, false );
 
         MovieAdapter.MvViewHolder viewHolder = new MovieAdapter.MvViewHolder(view);
+        viewHolder.MovieLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(parent.getContext(), MovieDetail.class);
+                MovieResult movieResult = new MovieResult();
+                movieResult.setOriginalTitle(movieResultList.get(viewHolder.getAdapterPosition()).getOriginalTitle());
+                movieResult.setOverview(movieResultList.get(viewHolder.getAdapterPosition()).getOverview());
+                movieResult.setBackdropPath(movieResultList.get(viewHolder.getAdapterPosition()).getBackdropPath());
+                movieResult.setVoteAverage(movieResultList.get(viewHolder.getAdapterPosition()).getVoteAverage());
+                movieResult.setReleaseDate(movieResultList.get(viewHolder.getAdapterPosition()).getReleaseDate());
+                movieResult.setPosterPath(movieResultList.get(viewHolder.getAdapterPosition()).getPosterPath());
+                intent.putExtra(MovieDetail.EXTRA_MOVIE, movieResult);
+                parent.getContext().startActivity(intent);
+            }
+        });
         return viewHolder;
     }
 
@@ -61,6 +79,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MvViewHolder
 
     public class MvViewHolder extends RecyclerView.ViewHolder {
 
+        RelativeLayout MovieLayout;
         ImageView mvPoster;
         TextView  mvTitle, mvYear;
         public MvViewHolder(@NonNull View itemView) {
@@ -69,6 +88,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MvViewHolder
             mvPoster = itemView.findViewById(R.id.movieImg);
             mvTitle = itemView.findViewById(R.id.movie_title);
             mvYear = itemView.findViewById(R.id.movie_year);
+            MovieLayout = itemView.findViewById(R.id.movieLayout);
         }
     }
 }
