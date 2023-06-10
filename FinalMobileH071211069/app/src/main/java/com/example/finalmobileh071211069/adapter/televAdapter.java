@@ -1,6 +1,7 @@
 package com.example.finalmobileh071211069.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.finalmobileh071211069.R;
+import com.example.finalmobileh071211069.activity.MovieDetail;
 import com.example.finalmobileh071211069.movieModel.MovieResult;
 import com.example.finalmobileh071211069.televModel.televResult;
 
@@ -37,7 +39,21 @@ public class televAdapter extends RecyclerView.Adapter<televAdapter.televViewHol
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         view = inflater.inflate(R.layout.item_telev, parent, false );
         televAdapter.televViewHolder viewHolder = new televAdapter.televViewHolder(view);
-
+        viewHolder.relativeLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(parent.getContext(), MovieDetail.class);
+                MovieResult movieResult = new MovieResult();
+                movieResult.setOriginalTitle(televResultList.get(viewHolder.getAdapterPosition()).getOriginalName());
+                movieResult.setOverview(televResultList.get(viewHolder.getAdapterPosition()).getOverview());
+                movieResult.setBackdropPath(televResultList.get(viewHolder.getAdapterPosition()).getBackdropPath());
+                movieResult.setVoteAverage(televResultList.get(viewHolder.getAdapterPosition()).getVoteAverage());
+                movieResult.setReleaseDate(televResultList.get(viewHolder.getAdapterPosition()).getFirstAirDate());
+                movieResult.setPosterPath(televResultList.get(viewHolder.getAdapterPosition()).getPosterPath());
+                intent.putExtra(MovieDetail.EXTRA_MOVIE, movieResult);
+                parent.getContext().startActivity(intent);
+            }
+        });
 
         return viewHolder;
     }
