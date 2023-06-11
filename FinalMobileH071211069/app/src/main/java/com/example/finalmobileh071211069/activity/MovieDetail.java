@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.finalmobileh071211069.R;
+import com.example.finalmobileh071211069.database.DatabaseHelper;
 import com.example.finalmobileh071211069.fragment.MovieFragment;
 import com.example.finalmobileh071211069.movieModel.MovieResult;
 
@@ -26,10 +27,15 @@ public class MovieDetail extends AppCompatActivity {
     TextView movtitle,movDate,movrate,movdesc;
     MovieResult movieResult;
 
+    DatabaseHelper databaseHelper;
+    boolean isFavorite;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movie_detail);
+
+        databaseHelper = new DatabaseHelper(this);
 
 
         movLogo = findViewById(R.id.mov_logo);
@@ -44,7 +50,7 @@ public class MovieDetail extends AppCompatActivity {
         movdesc= findViewById(R.id.mov_desc);
 
         movieResult = getIntent().getParcelableExtra(EXTRA_MOVIE);
-        MovieTitle = movieResult.getOriginalTitle();
+        MovieTitle = movieResult.getTitle();
         MovieDesc = movieResult.getOverview();
         MovieDate = movieResult.getReleaseDate();
         MovieRate = movieResult.getVoteAverage();
@@ -53,7 +59,7 @@ public class MovieDetail extends AppCompatActivity {
 
         movtitle.setText(MovieTitle);
         movDate.setText(MovieDate);
-        movrate.setText(String.format(MovieRate.toString()));
+        movrate.setText(String.valueOf(MovieRate));
         movdesc.setText(MovieDesc);
 
         Glide.with(getApplicationContext())
@@ -63,15 +69,29 @@ public class MovieDetail extends AppCompatActivity {
                 .load("https://image.tmdb.org/t/p/original"+ MovieBp)
                 .into(movBp);
 
+        if (MovieTitle != null) {
+            isFavorite = databaseHelper.isFavorite(MovieTitle, "movie");
+        }
+
+        if (isFavorite) {
+            movFav.setImageResource(R.drawable.baseline_favorite_24);
+        } else {
+            movFav.setImageResource(R.drawable.baseline_favorite_border_24);
+        }
+
         movFav.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if ((movFav.getDrawable().getConstantState() == Objects.requireNonNull(ResourcesCompat.getDrawable(getResources(), R.drawable.baseline_favorite_border_24, null)).getConstantState())){
-                    movFav.setImageResource(R.drawable.baseline_favorite_24);
-                    Toast.makeText(MovieDetail.this, MovieTitle + " added to favorites", Toast.LENGTH_SHORT).show();
-                }else{
+                if (isFavorite) {
+                    databaseHelper.removeFavorite(MovieTitle, "movie");
                     movFav.setImageResource(R.drawable.baseline_favorite_border_24);
+                    isFavorite = false;
                     Toast.makeText(MovieDetail.this, MovieTitle + " removed from favorites", Toast.LENGTH_SHORT).show();
+                } else {
+                    databaseHelper.addFavorite(MovieTitle, "movie",MoviePp,MovieDate,MovieDesc,MovieBp,MovieRate);
+                    movFav.setImageResource(R.drawable.baseline_favorite_24);
+                    isFavorite = true;
+                    Toast.makeText(MovieDetail.this, MovieTitle + " added to favorites", Toast.LENGTH_SHORT).show();
                 }
             }
         });

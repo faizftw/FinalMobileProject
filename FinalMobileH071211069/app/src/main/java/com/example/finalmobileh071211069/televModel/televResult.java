@@ -1,11 +1,16 @@
 package com.example.finalmobileh071211069.televModel;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import androidx.annotation.NonNull;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
-public class televResult {
+public class televResult implements Parcelable {
     @SerializedName("backdrop_path")
     @Expose
     private String backdropPath;
@@ -45,6 +50,52 @@ public class televResult {
     @SerializedName("vote_count")
     @Expose
     private Integer voteCount;
+
+    public televResult(Parcel in) {
+        backdropPath = in.readString();
+        firstAirDate = in.readString();
+        if (in.readByte() == 0) {
+            id = null;
+        } else {
+            id = in.readInt();
+        }
+        name = in.readString();
+        originCountry = in.createStringArrayList();
+        originalLanguage = in.readString();
+        originalName = in.readString();
+        overview = in.readString();
+        if (in.readByte() == 0) {
+            popularity = null;
+        } else {
+            popularity = in.readDouble();
+        }
+        posterPath = in.readString();
+        if (in.readByte() == 0) {
+            voteAverage = null;
+        } else {
+            voteAverage = in.readDouble();
+        }
+        if (in.readByte() == 0) {
+            voteCount = null;
+        } else {
+            voteCount = in.readInt();
+        }
+    }
+
+    public static final Creator<televResult> CREATOR = new Creator<televResult>() {
+        @Override
+        public televResult createFromParcel(Parcel in) {
+            return new televResult(in);
+        }
+
+        @Override
+        public televResult[] newArray(int size) {
+            return new televResult[size];
+        }
+    };
+    public televResult() {
+
+    }
 
     public String getBackdropPath() {
         return backdropPath;
@@ -148,5 +199,47 @@ public class televResult {
 
     public void setVoteCount(Integer voteCount) {
         this.voteCount = voteCount;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+
+    @Override
+    public void writeToParcel(@NonNull Parcel parcel, int i) {
+        parcel.writeString(backdropPath);
+        parcel.writeString(firstAirDate);
+        if (id == null) {
+            parcel.writeByte((byte) 0);
+        } else {
+            parcel.writeByte((byte) 1);
+            parcel.writeInt(id);
+        }
+        parcel.writeString(name);
+        parcel.writeStringList(originCountry);
+        parcel.writeString(originalLanguage);
+        parcel.writeString(originalName);
+        parcel.writeString(overview);
+        if (popularity == null) {
+            parcel.writeByte((byte) 0);
+        } else {
+            parcel.writeByte((byte) 1);
+            parcel.writeDouble(popularity);
+        }
+        parcel.writeString(posterPath);
+        if (voteAverage == null) {
+            parcel.writeByte((byte) 0);
+        } else {
+            parcel.writeByte((byte) 1);
+            parcel.writeDouble(voteAverage);
+        }
+        if (voteCount == null) {
+            parcel.writeByte((byte) 0);
+        } else {
+            parcel.writeByte((byte) 1);
+            parcel.writeInt(voteCount);
+        }
     }
 }

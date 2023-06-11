@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.finalmobileh071211069.R;
 import com.example.finalmobileh071211069.activity.MovieDetail;
+import com.example.finalmobileh071211069.activity.tvDetail;
 import com.example.finalmobileh071211069.movieModel.MovieResult;
 import com.example.finalmobileh071211069.televModel.televResult;
 
@@ -42,15 +43,15 @@ public class televAdapter extends RecyclerView.Adapter<televAdapter.televViewHol
         viewHolder.relativeLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(parent.getContext(), MovieDetail.class);
-                MovieResult movieResult = new MovieResult();
-                movieResult.setOriginalTitle(televResultList.get(viewHolder.getAdapterPosition()).getOriginalName());
-                movieResult.setOverview(televResultList.get(viewHolder.getAdapterPosition()).getOverview());
-                movieResult.setBackdropPath(televResultList.get(viewHolder.getAdapterPosition()).getBackdropPath());
-                movieResult.setVoteAverage(televResultList.get(viewHolder.getAdapterPosition()).getVoteAverage());
-                movieResult.setReleaseDate(televResultList.get(viewHolder.getAdapterPosition()).getFirstAirDate());
-                movieResult.setPosterPath(televResultList.get(viewHolder.getAdapterPosition()).getPosterPath());
-                intent.putExtra(MovieDetail.EXTRA_MOVIE, movieResult);
+                Intent intent = new Intent(parent.getContext(), tvDetail.class);
+                televResult televResult = new televResult();
+                televResult.setName(televResultList.get(viewHolder.getAdapterPosition()).getName());
+                televResult.setOverview(televResultList.get(viewHolder.getAdapterPosition()).getOverview());
+                televResult.setBackdropPath(televResultList.get(viewHolder.getAdapterPosition()).getBackdropPath());
+                televResult.setVoteAverage(televResultList.get(viewHolder.getAdapterPosition()).getVoteAverage());
+                televResult.setFirstAirDate(televResultList.get(viewHolder.getAdapterPosition()).getFirstAirDate());
+                televResult.setPosterPath(televResultList.get(viewHolder.getAdapterPosition()).getPosterPath());
+                intent.putExtra(tvDetail.EXTRA_TV_SHOW, televResult);
                 parent.getContext().startActivity(intent);
             }
         });

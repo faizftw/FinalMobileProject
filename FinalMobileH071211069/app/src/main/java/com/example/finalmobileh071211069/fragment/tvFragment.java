@@ -43,7 +43,6 @@ public class tvFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_tv, container, false);
     }
 
@@ -71,13 +70,11 @@ public class tvFragment extends Fragment {
                     adapter = new televAdapter(getContext(), tList);
                     recyclerView.setAdapter(adapter);
                 } else {
-                    // Handle the case where the response body is null or the request was not successful
                 }
             }
 
             @Override
             public void onFailure(Call<televResponse> call, Throwable t) {
-                // Handle failure
             }
         });
     }

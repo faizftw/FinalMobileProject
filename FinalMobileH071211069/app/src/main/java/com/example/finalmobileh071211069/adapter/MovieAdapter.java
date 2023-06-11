@@ -44,7 +44,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MvViewHolder
             public void onClick(View view) {
                 Intent intent = new Intent(parent.getContext(), MovieDetail.class);
                 MovieResult movieResult = new MovieResult();
-                movieResult.setOriginalTitle(movieResultList.get(viewHolder.getAdapterPosition()).getOriginalTitle());
+                movieResult.setTitle(movieResultList.get(viewHolder.getAdapterPosition()).getTitle());
                 movieResult.setOverview(movieResultList.get(viewHolder.getAdapterPosition()).getOverview());
                 movieResult.setBackdropPath(movieResultList.get(viewHolder.getAdapterPosition()).getBackdropPath());
                 movieResult.setVoteAverage(movieResultList.get(viewHolder.getAdapterPosition()).getVoteAverage());

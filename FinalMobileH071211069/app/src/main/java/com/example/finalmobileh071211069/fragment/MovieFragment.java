@@ -70,13 +70,12 @@ public class MovieFragment extends Fragment {
                     adapter = new MovieAdapter(getContext(), mList);
                     recyclerView.setAdapter(adapter);
                 } else {
-                    // Handle the case where the response body is null or the request was not successful
                 }
             }
 
             @Override
             public void onFailure(Call<MovieResponse> call, Throwable t) {
-                // Handle failure
+
             }
         });
     }
