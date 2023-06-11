@@ -35,6 +35,7 @@ public class tvFragment extends Fragment {
     String LANGUAGE = "en-US";
     String CATEGORY = "airing_today";
     int PAGE = 1;
+    private boolean isLoading = false;
 
     Context context;
     RecyclerView recyclerView;
@@ -77,5 +78,43 @@ public class tvFragment extends Fragment {
             public void onFailure(Call<televResponse> call, Throwable t) {
             }
         });
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+
+                GridLayoutManager layoutManager = (GridLayoutManager) recyclerView.getLayoutManager();
+                int visibleItemCount = layoutManager.getChildCount();
+                int totalItemCount = layoutManager.getItemCount();
+                int firstVisibleItemPosition = layoutManager.findFirstVisibleItemPosition();
+
+                if (!isLoading && (visibleItemCount + firstVisibleItemPosition) >= totalItemCount) {
+                    PAGE++;
+                    isLoading = true;
+                    loadMoreData();
+                }
+            }
+        });
     }
+    private void loadMoreData() {
+        televInterface televInterface = ApiClient.getClient().create(televInterface.class);
+        Call<televResponse> call = televInterface.getTelev(CATEGORY, API_KEY, LANGUAGE, PAGE);
+        call.enqueue(new Callback<televResponse>() {
+            @Override
+            public void onResponse(Call<televResponse> call, Response<televResponse> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    List<televResult> newList = response.body().getResults();
+                    adapter.addTelevShows(newList);
+                    isLoading = false;
+                } else {
+                }
+            }
+
+            @Override
+            public void onFailure(Call<televResponse> call, Throwable t) {
+
+            }
+        });
+    }
+
 }

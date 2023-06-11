@@ -31,6 +31,12 @@ public class televAdapter extends RecyclerView.Adapter<televAdapter.televViewHol
         this.televResultList = televResultList;
     }
 
+    public void addTelevShows(List<televResult> newTelevShows) {
+        int startPos = televResultList.size();
+        televResultList.addAll(newTelevShows);
+        notifyItemRangeInserted(startPos, newTelevShows.size());
+    }
+
 
 
     @NonNull

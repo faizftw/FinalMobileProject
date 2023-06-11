@@ -24,9 +24,15 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MvViewHolder
     private Context context;
     private List<MovieResult> movieResultList;
 
+
     public MovieAdapter(Context context, List<MovieResult> movieResultList) {
         this.context = context;
         this.movieResultList = movieResultList;
+    }
+    public void addMovies(List<MovieResult> newMovies) {
+        int startPos = movieResultList.size();
+        movieResultList.addAll(newMovies);
+        notifyItemRangeInserted(startPos, newMovies.size());
     }
 
 

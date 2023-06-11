@@ -35,6 +35,8 @@ public class MovieFragment extends Fragment {
     String CATEGORY = "now_playing";
     int PAGE = 1;
 
+    private boolean isLoading = false;
+
     Context context;
     RecyclerView recyclerView;
 
@@ -78,5 +80,44 @@ public class MovieFragment extends Fragment {
 
             }
         });
+
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+
+                GridLayoutManager layoutManager = (GridLayoutManager) recyclerView.getLayoutManager();
+                int visibleItemCount = layoutManager.getChildCount();
+                int totalItemCount = layoutManager.getItemCount();
+                int firstVisibleItemPosition = layoutManager.findFirstVisibleItemPosition();
+
+                if (!isLoading && (visibleItemCount + firstVisibleItemPosition) >= totalItemCount) {
+                    PAGE++;
+                    isLoading = true;
+                    loadMoreData();
+                }
+            }
+        });
     }
+    private void loadMoreData() {
+        MovInterface movInterface = ApiClient.getClient().create(MovInterface.class);
+        Call<MovieResponse> call = movInterface.getMovie(CATEGORY, API_KEY, LANGUAGE, PAGE);
+        call.enqueue(new Callback<MovieResponse>() {
+            @Override
+            public void onResponse(Call<MovieResponse> call, Response<MovieResponse> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    List<MovieResult> newList = response.body().getResults();
+                    adapter.addMovies(newList);
+                    isLoading = false;
+                } else {
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<MovieResponse> call, Throwable t) {
+            }
+        });
+    }
+
 }
