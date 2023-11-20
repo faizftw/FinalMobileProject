@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">H071211069 - Final Mobile</string>
+    <string name="app_name">Movie Catalog</string>
     <string name="movies">Movies</string>
     <string name="tv_shows">TV shows</string>
     <string name="favorites">Favorites</string>
